@@ -1,0 +1,16 @@
+## Interface: 100206
+## Name: EZTrade
+## Title: |cff45D388EZTrade|r
+## Notes: EZ trade items you recently looted
+## Author: Pinta365@Github
+## Version: 0.0.1
+## SavedVariables: EZTradeDB 
+## IconTexture: Interface\AddOns\EZTrade\Textures\pinta
+
+src\Config.lua
+src\Utilities.lua
+src\SlashCommand.lua
+src\OptionsPanel.lua
+src\DebugPanel.lua
+src\TradePanel.lua
+EZTrade.lua
