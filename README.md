@@ -4,12 +4,12 @@ Your bags are a chaotic mess of reagents, grey vendor trash, and that epic trink
 
 ![Image of the trade panel](https://cdn.pinta.land/ezt/ezt1.png)
 
-### Features
+### Description
 
-* **Convenient Loot List:** Displays recent loot next to your trade frame for easy access.
-* **Item Icons:**  Visually identify your loot with item icons and full name if expanded.
-* **Right-Click Actions:** Trade directly from the loot list via right click.
-* **Tooltip Integration:** Hover over items for detailed tooltips.
+EZTrade brings a convenient loot list right next to your trade frame, complete with item icons and expandable full item names for easy identification. Right-click any item in the list to trade it directly, and enjoy informative tooltips with just a hover.
+
+### Download
+Main channels for download is through [Wago](https://addons.wago.io/addons/eztrade) and [CurseForge](https://www.curseforge.com/wow/addons/eztrade).
 
 ### Slash Commands
 

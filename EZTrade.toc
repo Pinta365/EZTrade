@@ -1,4 +1,4 @@
-## Interface: 100206
+## Interface: 100207
 ## Name: EZTrade
 ## Title: |cff45D388EZTrade|r
 ## Notes: EZ trade items you recently looted
