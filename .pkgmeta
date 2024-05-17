@@ -2,5 +2,4 @@ ignore:
   - .vscode
   - .github
   - README.md
-  - python
   - .pkgmeta

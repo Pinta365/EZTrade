@@ -8,6 +8,8 @@ Your bags are a chaotic mess of reagents, grey vendor trash, and that epic trink
 
 EZTrade brings a convenient loot list right next to your trade frame, complete with item icons and expandable full item names for easy identification. Right-click any item in the list to trade it directly, and enjoy informative tooltips with just a hover.
 
+Currently tracking drops of the following types: `Weapons`, `Armours`, `Recipies` and `Battle pets`. Might add more in the future and you can opt in and out of these in the options panel.
+
 ### Download
 Main channels for download is through [Wago](https://addons.wago.io/addons/eztrade) and [CurseForge](https://www.curseforge.com/wow/addons/eztrade).
 

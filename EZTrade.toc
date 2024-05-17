@@ -3,7 +3,7 @@
 ## Title: |cff45D388EZTrade|r
 ## Notes: EZ trade items you recently looted
 ## Author: Pinta365@Github
-## Version: 0.1.0
+## Version: 0.1.3
 ## SavedVariables: EZTradeDB
 ## X-Curse-Project-ID: 1016387
 ## X-Wago-ID: BKpqarGE
