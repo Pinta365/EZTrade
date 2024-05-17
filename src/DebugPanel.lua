@@ -1,8 +1,7 @@
 --DebugPanel.lua
+-- Just a temporary panel with things for development
 
 local addonName, EZT = ...
-
-
 
 EZT.setUpDebugFrame = function()
     ---@class EZTDebugFrame: Frame
@@ -25,7 +24,9 @@ EZT.setUpDebugFrame = function()
     button1:SetWidth(200)
     EZT.setOrHookHandler(button1, "OnClick", function(self)
         EZT.AddLoot("|cffa335ee|Hitem:193869::::::::4:1448:::::::::|h[Pattern: Toxic Thorn Footwraps]|h|r")
-        --EZT.RedrawLootList()
+        C_Timer.After(1, function()
+            EZT.RedrawLootList()
+        end)
     end)
 
     local button2 = CreateFrame("Button", "Dathea's Cyclonic Cage", EZTDebugFrame, "UIPanelButtonTemplate")
@@ -35,7 +36,9 @@ EZT.setUpDebugFrame = function()
     button2:SetWidth(200)
     EZT.setOrHookHandler(button2, "OnClick", function(self)
         EZT.AddLoot("|cffa335ee|Hitem:195494::::::::4:1448:::::::::|h[Dathea's Cyclonic Cage]|h|r")
-        --EZT.RedrawLootList()
+        C_Timer.After(1, function()
+            EZT.RedrawLootList()
+        end)
     end)
 
     local button3 = CreateFrame("Button", "Sargha's Smasher", EZTDebugFrame, "UIPanelButtonTemplate")
@@ -45,7 +48,9 @@ EZT.setUpDebugFrame = function()
     button3:SetWidth(200)
     EZT.setOrHookHandler(button3, "OnClick", function(self)
         EZT.AddLoot("|cff0070dd|Hitem:193779::::::::4:1448:::::::::|h[Sargha's Smasher]|h|r")
-        --EZT.RedrawLootList()
+        C_Timer.After(1, function()
+            EZT.RedrawLootList()
+        end)
     end)
 
     local button4 = CreateFrame("Button", "Eye of Allseeing", EZTDebugFrame, "UIPanelButtonTemplate")
@@ -55,7 +60,9 @@ EZT.setUpDebugFrame = function()
     button4:SetWidth(200)
     EZT.setOrHookHandler(button4, "OnClick", function(self)
         EZT.AddLoot("|cff1eff00|Hitem:186554::::::::4:1448:::::::::|h[Eye of Allseeing]|h|r")
-        --EZT.RedrawLootList()
+        C_Timer.After(1, function()
+            EZT.RedrawLootList()
+        end)
     end)
 
     local button5 = CreateFrame("Button", "Redraw", EZTDebugFrame, "UIPanelButtonTemplate")

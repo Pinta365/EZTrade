@@ -1,4 +1,4 @@
-## EZTrade
+## EZTrade - World of Warcraft Addon
 
 Your bags are a chaotic mess of reagents, grey vendor trash, and that epic trinket you just won. Your friends are green with envy, but you can't even find the darn thing to trade it to them. **EZTrade** to the rescue!
 

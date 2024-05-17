@@ -2,7 +2,7 @@
 
 local addonName, EZT = ...
 
-local attachToFrame = TradeFrame --TradeFrame  MailFrame PaperDollItemsFrame
+local attachToFrame = TradeFrame --TradeFrame  MailFrame PaperDollItemsFrame MerchantFrame
 
 ---@class EZTradeFrame: Frame
 local EZTradeFrame = CreateFrame("Frame", "EZTradeFrame", attachToFrame, "DefaultPanelFlatTemplate")
@@ -11,17 +11,20 @@ local minMaxButton = CreateFrame("Button", "ToggleMinMax", EZTradeFrame, "UIPane
 local myLoot = {}
 
 local maxLootItems = 10
+local longestLootString = 10 -- used to estimate width of "open" loot panel.
 local lootRowFrames = {}
 
+
 local windowOpen = 0
-local windowOpenSize = 250
-local windowCloseSize = 105
+local windowClosedSize = 105
 
 EZT.AddLoot = function(item)
+    EZT.debugPrint("Adding loot: " .. item)
     myLoot[#myLoot + 1] = item
     if #myLoot == maxLootItems then
         table.remove(myLoot, 1)
     end
+    EZT.RedrawLootList()
 end
 
 local function getRequiredHeight()
@@ -32,13 +35,16 @@ local function getRequiredHeight()
     return lootHeight
 end
 
-local function findAndUseItem(listedId)
-    local GetContainerNumSlots = C_Container and C_Container.GetContainerNumSlots
-    local GetContainerItemInfo = C_Container and C_Container.GetContainerItemInfo
+local function getRequiredWidth()
+    local lootWidth = 105 -- Minimized panel size.
+    local magicNumber = 7 -- A bit of guesstimate number. "Width of a char".
+    return lootWidth + (longestLootString * magicNumber)
+end
 
+local function findAndUseItem(listedId)
     for bag = 0, NUM_BAG_FRAMES do
-        for slot = 1, GetContainerNumSlots(bag) do
-            local containerInfo = GetContainerItemInfo(bag, slot)
+        for slot = 1, C_Container.GetContainerNumSlots(bag) do
+            local containerInfo = C_Container.GetContainerItemInfo(bag, slot)
             local iid = containerInfo and containerInfo.itemID or nil
             if iid == listedId then
                 C_Container.UseContainerItem(bag, slot)
@@ -49,12 +55,14 @@ local function findAndUseItem(listedId)
 end
 
 local function findItem(listedId)
-    local GetContainerNumSlots = C_Container and C_Container.GetContainerNumSlots
-    local GetContainerItemInfo = C_Container and C_Container.GetContainerItemInfo
+
+    if EZTradeDB.debug then
+        return true
+    end
 
     for bag = 0, NUM_BAG_FRAMES do
-        for slot = 1, GetContainerNumSlots(bag) do
-            local containerInfo = GetContainerItemInfo(bag, slot)
+        for slot = 1, C_Container.GetContainerNumSlots(bag) do
+            local containerInfo = C_Container.GetContainerItemInfo(bag, slot)
             local iid = containerInfo and containerInfo.itemID or nil
             if iid == listedId then
                 return true
@@ -90,8 +98,8 @@ local function toggleFrameSize()
 end
 
 local function setUpTradeFrame(f)
-    f:SetSize(windowOpenSize, getRequiredHeight())
-    f:SetPoint("RIGHT", attachToFrame, "RIGHT", 255, 0)
+    f:SetSize(windowClosedSize, getRequiredHeight())
+    f:SetPoint("TOPLEFT", attachToFrame, "TOPRIGHT", 0, 0)
 
     f.title = f:CreateFontString("Title", "OVERLAY")
     f.title:SetFontObject("GameFontHighlight")
@@ -110,7 +118,6 @@ local function setUpTradeFrame(f)
     end
     minMaxButton:SetScript("OnClick", toggleFrameSize)
 
-    -- Create loot row frames  that we reuse
     for i = 1, maxLootItems do
         local rowFrame = CreateFrame("Frame", "LootRow" .. i, f)
 
@@ -124,11 +131,17 @@ local function setUpTradeFrame(f)
             GameTooltip:Hide()
         end)
 
+        ---@diagnostic disable-next-line: inject-field
+        rowFrame.icon = rowFrame:CreateTexture(nil, "OVERLAY")
+        rowFrame.icon:SetSize(32, 32)
+        rowFrame.icon:SetPoint("LEFT", rowFrame, "LEFT", -3, 0)
+
+        rowFrame:Hide()
         lootRowFrames[i] = rowFrame
-        lootRowFrames[i]:Hide()
+
     end
 
-    hideOnNoLoot()
+    EZTradeFrame:Hide()
 end
 
 setUpTradeFrame(EZTradeFrame)
@@ -137,15 +150,23 @@ setUpTradeFrame(EZTradeFrame)
 EZT.RedrawLootList = function()
     local yPos = 35
     local yIncrement = 35
-
     local updatedLoot = {}
 
-    for _, lootItem in ipairs(myLoot) do
+    for i = 1, #myLoot do
+        local lootItem = myLoot[i]
         local itemId = GetItemInfoFromHyperlink(lootItem)
+        local itemName = C_Item.GetItemInfo(lootItem)
+
+        -- Update longestLootString for width calculation
+        longestLootString = max(longestLootString, #itemName)
+
         if findItem(itemId) then -- Keep the loot item if found
             updatedLoot[#updatedLoot + 1] = lootItem
         end
     end
+
+    --DevTools_Dump(myLoot)
+    --DevTools_Dump(updatedLoot)
 
     myLoot = updatedLoot
 
@@ -158,18 +179,19 @@ EZT.RedrawLootList = function()
 
         rowFrame:SetPoint("TOPLEFT", EZTradeFrame, "TOPLEFT", 20, -yPos)
         yPos = yPos + yIncrement
-        if myLoot[i] then
-            local _, _, _, _, _, _, _, _, _, itemTexture = C_Item.GetItemInfo(myLoot[i])
+        if lootItem then
+            local _, _, _, _, _, _, _, _, _, itemTexture = C_Item.GetItemInfo(lootItem)
 
             if rowFrame.icon then
                 rowFrame.icon:SetTexture(itemTexture)
             else
                 rowFrame.icon = rowFrame:CreateTexture(nil, "OVERLAY")
+                rowFrame.icon:SetTexture(itemTexture)
                 rowFrame.icon:SetSize(32, 32)
                 rowFrame.icon:SetPoint("LEFT", rowFrame, "LEFT", -3, 0)
             end
 
-            rowFrame.hyperlink = myLoot[i]
+            rowFrame.hyperlink = lootItem
 
             if not rowFrame.fontString then
                 rowFrame.fontString = rowFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightMedium")
@@ -177,13 +199,13 @@ EZT.RedrawLootList = function()
             end
 
             if windowOpen == 1 then
-                EZTradeFrame:SetSize(windowOpenSize, getRequiredHeight())
-                EZTradeFrame:SetPoint("RIGHT", attachToFrame, "RIGHT", 255, 0)
+                EZTradeFrame:SetSize(getRequiredWidth(), getRequiredHeight())
+                EZTradeFrame:SetPoint("TOPLEFT", attachToFrame, "TOPRIGHT", 0, 0)
                 rowFrame:SetSize(200, 32)
                 rowFrame.fontString:SetText(rowFrame.hyperlink)
             else
-                EZTradeFrame:SetSize(windowCloseSize, getRequiredHeight())
-                EZTradeFrame:SetPoint("RIGHT", attachToFrame, "RIGHT", 110, 0)
+                EZTradeFrame:SetSize(windowClosedSize, getRequiredHeight())
+                EZTradeFrame:SetPoint("TOPLEFT", attachToFrame, "TOPRIGHT", 0, 0)
                 rowFrame:SetSize(32, 32)
                 rowFrame.fontString:SetText("")
             end
@@ -205,8 +227,10 @@ end
 
 EZT.OnTrade = function()
     EZT.RedrawLootList()
-    hideOnNoLoot()
 end
 
 EZT.OffTrade = function()
+    C_Timer.After(1, function()
+        EZT.RedrawLootList()
+    end)
 end

@@ -23,6 +23,15 @@ SlashCmdList["EZTrade_CMD"] = function(args)
         --Reset to default settings.
         EZTradeDB = CopyTable(EZT.addonDefaults)
         ReloadUI()
+    elseif lowercaseArgs == "debug" then
+        -- toggle EZTradeDB.debug
+        EZTradeDB.debug = not EZTradeDB.debug
+        if EZTradeDB.debug then
+            print(WrapTextInColorCode(EZT.addon.title .. " debug mode enabled.", EZT.colors["PRIMARY"]))
+        else
+            print(WrapTextInColorCode(EZT.addon.title .. " debug mode disabled.", EZT.colors["PRIMARY"]))
+        end
+
     else
         InterfaceOptionsFrame_OpenToCategory("EZTrade")
     end

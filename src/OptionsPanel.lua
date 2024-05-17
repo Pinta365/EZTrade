@@ -44,51 +44,53 @@ EZT.InitOptions = function()
     optionsPanel.name = addonName
 
     -- Create a toggle for the "Debug" option.
-    local debugCheckbox = createOptionCheckButton(optionsPanel, "Debug mode (developer mode)", "ToggleDebugCheckbox", 16, -16)
-    EZT.setOrHookHandler(debugCheckbox, "OnClick", function(self)
-        EZTradeDB.debug = self:GetChecked()
-    end)
-    debugCheckbox:SetChecked(EZTradeDB.debug)
+    --local debugCheckbox = createOptionCheckButton(optionsPanel, "Debug mode (developer mode)", "ToggleDebugCheckbox", 16, -16)
+    --EZT.setOrHookHandler(debugCheckbox, "OnClick", function(self)
+    --    EZTradeDB.debug = self:GetChecked()
+    --end)
+    --debugCheckbox:SetChecked(EZTradeDB.debug)
 
      -- Loot options
     
      optionsPanel.lootHeader = optionsPanel:CreateFontString(nil, "OVERLAY", "GameFontHighlightMedium")
-     optionsPanel.lootHeader:SetPoint("TOPLEFT", 16, -100)
+     optionsPanel.lootHeader:SetPoint("TOPLEFT", 16, -10)
      optionsPanel.lootHeader:SetText("Loot tracking")
 
-    local trackWeapons = createOptionCheckButton(optionsPanel, "Track weapons", "trackWeaponsButton", 16, -120)
+    local trackWeapons = createOptionCheckButton(optionsPanel, "Track weapons", "trackWeaponsButton", 16, -30)
     EZT.setOrHookHandler(trackWeapons, "OnClick", function(self)
         EZTradeDB.trackWeapons = self:GetChecked()
     end)
     trackWeapons:SetChecked(EZTradeDB.trackWeapons)
 
-    local trackArmors = createOptionCheckButton(optionsPanel, "Track armors", "trackArmorsButton", 16, -140)
+    local trackArmors = createOptionCheckButton(optionsPanel, "Track armors", "trackArmorsButton", 16, -50)
     EZT.setOrHookHandler(trackArmors, "OnClick", function(self)
         EZTradeDB.trackArmors = self:GetChecked()
     end)
     trackArmors:SetChecked(EZTradeDB.trackArmors)
 
-    local trackRecipe = createOptionCheckButton(optionsPanel, "Track recipies", "trackRecipeButton", 16, -160)
+    local trackRecipe = createOptionCheckButton(optionsPanel, "Track recipies", "trackRecipeButton", 16, -70)
     EZT.setOrHookHandler(trackRecipe, "OnClick", function(self)
         EZTradeDB.trackRecipe = self:GetChecked()
     end)
     trackRecipe:SetChecked(EZTradeDB.trackRecipe)
 
-    local trackPets = createOptionCheckButton(optionsPanel, "Track battle pets", "trackPetsButton", 16, -180)
+    local trackPets = createOptionCheckButton(optionsPanel, "Track battle pets", "trackPetsButton", 16, -90)
     EZT.setOrHookHandler(trackPets, "OnClick", function(self)
         EZTradeDB.trackPets = self:GetChecked()
     end)
     trackPets:SetChecked(EZTradeDB.trackPets)
 
      -- Button for resetting to default settings.
-     local resetButton = createOptionButton(optionsPanel, "Reset settings", "resetButton", 16, -48, 100, 25)
+     local resetButton = createOptionButton(optionsPanel, "Reset to default settings", "resetButton", 16, -200, 200, 25)
      EZT.setOrHookHandler(resetButton, "OnClick", function()
         EZTradeDB = CopyTable(EZT.addonDefaults)
-        debugCheckbox:SetChecked(EZTradeDB.debug)
+        --debugCheckbox:SetChecked(EZTradeDB.debug)
         trackWeapons:SetChecked(EZTradeDB.trackWeapons)
         trackArmors:SetChecked(EZTradeDB.trackArmors)
         trackRecipe:SetChecked(EZTradeDB.trackRecipe)
         trackPets:SetChecked(EZTradeDB.trackPets)
+
+        print(WrapTextInColorCode(EZT.addon.title .. " is reset to default settings.", EZT.colors["PRIMARY"]))
      end)
 
      optionsPanel.versionInfo = optionsPanel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")

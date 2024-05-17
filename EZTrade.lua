@@ -6,6 +6,11 @@ local addonName, EZT = ...
 local f = CreateFrame("Frame")
 
 local function isRelevantLoot(classID)
+
+    if EZTradeDB.debug then
+        return true
+    end
+
     if (classID == 2 and EZTradeDB.trackWeapons) then
         return true
     elseif (classID == 4 and EZTradeDB.trackArmors) then
@@ -14,8 +19,6 @@ local function isRelevantLoot(classID)
         return true
     elseif (classID == 17 and EZTradeDB.trackPets) then
         return true
-    --elseif (classID == 0 or classID == 15) then -- Temporary
-    --    return true
     else
         return false
     end
@@ -53,20 +56,16 @@ function f:CHAT_MSG_LOOT(lootText)
     local localizedLootString = LOOT_ITEM_SELF:gsub("%%s", ""):gsub("%.$", "")
 
     local itemLinkTmp = string.match(lootText, "|c.-|h|r")
-    --local itemId = GetItemInfoFromHyperlink(itemLinkTmp)
 
     if (itemLinkTmp) then
-        local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType,
-                itemSubType, itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID,
-                subclassID, bindType, expansionID, setID, isCraftingReagent = C_Item.GetItemInfo(itemLinkTmp)
-        
-        EZT.debugPrint(itemLink .. classID)
+        local _, _, _, _, _, _, _, _, _, _, _, classID = C_Item.GetItemInfo(itemLinkTmp)
 
         if (isMyLoot(lootText, localizedLootString)) then -- Only add "my" loot to the list.
             ---@diagnostic disable-next-line: undefined-field
-            if (isRelevantLoot(classID)) then    -- Only add relevant loot               
-                EZT.AddLoot(itemLinkTmp)
-                --EZT.RedrawLootList()
+            if (isRelevantLoot(classID)) then    -- Only add relevant loot
+                C_Timer.After(1, function()
+                    EZT.AddLoot(itemLinkTmp)
+                end)
             end
         end
     end
