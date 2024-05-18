@@ -24,7 +24,8 @@ local function isRelevantLoot(classID)
     end
 end
 
-local function isMyLoot(lootText, localizedLootString)
+local function isMyLoot(lootText)
+    local localizedLootString = LOOT_ITEM_SELF:gsub("%%s", ""):gsub("%.$", "")
     if (string.sub(lootText, 1, #localizedLootString) == localizedLootString) then
         return true
     else
@@ -53,14 +54,11 @@ function f:ADDON_LOADED(addon)
 end
 
 function f:CHAT_MSG_LOOT(lootText)
-    local localizedLootString = LOOT_ITEM_SELF:gsub("%%s", ""):gsub("%.$", "")
-
     local itemLinkTmp = string.match(lootText, "|c.-|h|r")
 
     if (itemLinkTmp) then
-        local _, _, _, _, _, _, _, _, _, _, _, classID = C_Item.GetItemInfo(itemLinkTmp)
-
-        if (isMyLoot(lootText, localizedLootString)) then -- Only add "my" loot to the list.
+        local _, _, _, _, _, classID, _ = C_Item.GetItemInfoInstant(itemLinkTmp)
+        if (isMyLoot(lootText)) then -- Only add "my" loot to the list.
             ---@diagnostic disable-next-line: undefined-field
             if (isRelevantLoot(classID)) then    -- Only add relevant loot
                 C_Timer.After(1, function()

@@ -32,3 +32,14 @@ EZT.makeFrameMovable = function(frame)
     frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
 end
 
+---Helper function to extract item ID from an item link
+---@param itemLink string The item link to extract from
+function EZT.GetItemIDFromLink(itemLink)
+    return tonumber(itemLink:match("item:(%d+)"))
+end
+
+---Helper function to extract item name from an item link
+---@param itemLink string The item link to extract from
+function EZT.GetItemNameFromLink(itemLink)
+    return itemLink:match("h%[(.*)%]|h")
+end

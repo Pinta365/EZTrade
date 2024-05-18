@@ -154,8 +154,8 @@ EZT.RedrawLootList = function()
 
     for i = 1, #myLoot do
         local lootItem = myLoot[i]
-        local itemId = GetItemInfoFromHyperlink(lootItem)
-        local itemName = C_Item.GetItemInfo(lootItem)
+        local itemId = EZT.GetItemIDFromLink(lootItem) or 0
+        local itemName = EZT.GetItemNameFromLink(lootItem) or  ""
 
         -- Update longestLootString for width calculation
         longestLootString = max(longestLootString, #itemName)
@@ -180,13 +180,13 @@ EZT.RedrawLootList = function()
         rowFrame:SetPoint("TOPLEFT", EZTradeFrame, "TOPLEFT", 20, -yPos)
         yPos = yPos + yIncrement
         if lootItem then
-            local _, _, _, _, _, _, _, _, _, itemTexture = C_Item.GetItemInfo(lootItem)
+            local _, _, _, _, icon= C_Item.GetItemInfoInstant(lootItem)
 
             if rowFrame.icon then
-                rowFrame.icon:SetTexture(itemTexture)
+                rowFrame.icon:SetTexture(icon)
             else
                 rowFrame.icon = rowFrame:CreateTexture(nil, "OVERLAY")
-                rowFrame.icon:SetTexture(itemTexture)
+                rowFrame.icon:SetTexture(icon)
                 rowFrame.icon:SetSize(32, 32)
                 rowFrame.icon:SetPoint("LEFT", rowFrame, "LEFT", -3, 0)
             end
@@ -212,7 +212,7 @@ EZT.RedrawLootList = function()
 
             rowFrame:SetScript("OnMouseUp", function(self, button)
                 if button == "RightButton" then
-                    local itemId = GetItemInfoFromHyperlink(rowFrame.hyperlink)
+                    local itemId = EZT.GetItemIDFromLink(lootItem)
                     if itemId then
                         findAndUseItem(itemId)
                     end
