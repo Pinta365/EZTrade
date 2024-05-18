@@ -2,7 +2,7 @@
 
 local addonName, EZT = ...
 
-local attachToFrame = TradeFrame --TradeFrame  MailFrame PaperDollItemsFrame MerchantFrame
+local attachToFrame = TradeFrame --TradeFrame PaperDollItemsFrame MerchantFrame
 
 ---@class EZTradeFrame: Frame
 local EZTradeFrame = CreateFrame("Frame", "EZTradeFrame", attachToFrame, "DefaultPanelFlatTemplate")
@@ -55,11 +55,6 @@ local function findAndUseItem(listedId)
 end
 
 local function findItem(listedId)
-
-    if EZTradeDB.debug then
-        return true
-    end
-
     for bag = 0, NUM_BAG_FRAMES do
         for slot = 1, C_Container.GetContainerNumSlots(bag) do
             local containerInfo = C_Container.GetContainerItemInfo(bag, slot)
@@ -74,6 +69,7 @@ end
 
 local function hideOnNoLoot()
     if #myLoot == 0 then
+        longestLootString = 10
         EZTradeFrame:Hide()
     else
         EZTradeFrame:Show()
@@ -230,7 +226,5 @@ EZT.OnTrade = function()
 end
 
 EZT.OffTrade = function()
-    C_Timer.After(1, function()
-        EZT.RedrawLootList()
-    end)
+    EZT.RedrawLootList()
 end

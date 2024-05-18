@@ -73,6 +73,19 @@ f:SetScript("OnEvent", function(self, event, ...)
     self[event](self, ...)
 end)
 
+-- --For debug
+-- function f:MERCHANT_SHOW()
+--     EZT.RedrawLootList()
+--     print("Merch open")
+-- end
+-- 
+-- function f:MERCHANT_CLOSED()
+--     print("Merch close")
+--     EZT.RedrawLootList()
+-- end
+-- f:RegisterEvent("MERCHANT_SHOW")
+-- f:RegisterEvent("MERCHANT_CLOSED")
+
 f:RegisterEvent("ADDON_LOADED")
 f:RegisterEvent("CHAT_MSG_LOOT")
 f:RegisterEvent("TRADE_SHOW")
