@@ -2,7 +2,7 @@
 
 local addonName, EZT = ...
 
-local attachToFrame = TradeFrame --TradeFrame PaperDollItemsFrame MerchantFrame
+local attachToFrame = PaperDollItemsFrame --TradeFrame PaperDollItemsFrame MerchantFrame
 
 ---@class EZTradeFrame: Frame
 local EZTradeFrame = CreateFrame("Frame", "EZTradeFrame", attachToFrame, "DefaultPanelFlatTemplate")
@@ -18,9 +18,18 @@ local lootRowFrames = {}
 local windowOpen = 0
 local windowClosedSize = 105
 
-EZT.AddLoot = function(item)
-    EZT.debugPrint("Adding loot: " .. item)
-    myLoot[#myLoot + 1] = item
+EZT.AddLoot = function(itemLink, itemId, itemName, itemIcon, itemGuid)
+    EZT.debugPrint("Adding loot: " .. itemLink .. ", " .. itemId .. ", " .. itemName .. ", " .. itemIcon .. ", " .. itemGuid)
+
+    local newItem = {
+        link = itemLink,
+        id = itemId or 0,
+        name = itemName or "",
+        icon = itemIcon,
+        guid = itemGuid
+    }
+
+    myLoot[#myLoot + 1] = newItem
     if #myLoot == maxLootItems then
         table.remove(myLoot, 1)
     end
@@ -41,12 +50,12 @@ local function getRequiredWidth()
     return lootWidth + (longestLootString * magicNumber)
 end
 
-local function findAndUseItem(listedId)
+local function findAndUseItem(searchID)
     for bag = 0, NUM_BAG_FRAMES do
         for slot = 1, C_Container.GetContainerNumSlots(bag) do
             local containerInfo = C_Container.GetContainerItemInfo(bag, slot)
-            local iid = containerInfo and containerInfo.itemID or nil
-            if iid == listedId then
+            local currentID = containerInfo and containerInfo.itemID or nil
+            if currentID == searchID then
                 C_Container.UseContainerItem(bag, slot)
                 break
             end
@@ -54,12 +63,12 @@ local function findAndUseItem(listedId)
     end
 end
 
-local function findItem(listedId)
+local function findItem(searchID)
     for bag = 0, NUM_BAG_FRAMES do
         for slot = 1, C_Container.GetContainerNumSlots(bag) do
             local containerInfo = C_Container.GetContainerItemInfo(bag, slot)
-            local iid = containerInfo and containerInfo.itemID or nil
-            if iid == listedId then
+            local currentID = containerInfo and containerInfo.itemID or nil
+            if currentID == searchID then
                 return true
             end
         end
@@ -150,13 +159,11 @@ EZT.RedrawLootList = function()
 
     for i = 1, #myLoot do
         local lootItem = myLoot[i]
-        local itemId = EZT.GetItemIDFromLink(lootItem) or 0
-        local itemName = EZT.GetItemNameFromLink(lootItem) or  ""
 
         -- Update longestLootString for width calculation
-        longestLootString = max(longestLootString, #itemName)
+        longestLootString = max(longestLootString, #lootItem.name)
 
-        if findItem(itemId) then -- Keep the loot item if found
+        if findItem(lootItem.id) then -- Keep the loot item if found
             updatedLoot[#updatedLoot + 1] = lootItem
         end
     end
@@ -176,18 +183,17 @@ EZT.RedrawLootList = function()
         rowFrame:SetPoint("TOPLEFT", EZTradeFrame, "TOPLEFT", 20, -yPos)
         yPos = yPos + yIncrement
         if lootItem then
-            local _, _, _, _, icon= C_Item.GetItemInfoInstant(lootItem)
 
             if rowFrame.icon then
-                rowFrame.icon:SetTexture(icon)
+                rowFrame.icon:SetTexture(lootItem.icon)
             else
                 rowFrame.icon = rowFrame:CreateTexture(nil, "OVERLAY")
-                rowFrame.icon:SetTexture(icon)
+                rowFrame.icon:SetTexture(lootItem.icon)
                 rowFrame.icon:SetSize(32, 32)
                 rowFrame.icon:SetPoint("LEFT", rowFrame, "LEFT", -3, 0)
             end
 
-            rowFrame.hyperlink = lootItem
+            rowFrame.hyperlink = lootItem.link
 
             if not rowFrame.fontString then
                 rowFrame.fontString = rowFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightMedium")
@@ -208,7 +214,7 @@ EZT.RedrawLootList = function()
 
             rowFrame:SetScript("OnMouseUp", function(self, button)
                 if button == "RightButton" then
-                    local itemId = EZT.GetItemIDFromLink(lootItem)
+                    local itemId = lootItem.id
                     if itemId then
                         findAndUseItem(itemId)
                     end
