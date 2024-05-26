@@ -66,22 +66,6 @@ EZT.itemHasTradeTimerFromTooltipData = function(TooltipData)
     return false
 end
 
-EZT.getTradeTimeRemainingFromTooltipData = function(TooltipData)
-    local matchString = BIND_TRADE_TIME_REMAINING:gsub("%%(.*)%%", "(.*)") -- Simpler pattern matching
-
-    for _, line in ipairs(TooltipData.lines) do -- Use ipairs for correct line iteration
-        if line.type == Enum.TooltipDataLineType.None and string.find(line.leftText, BIND_TRADE_TIME_REMAINING) then
-            print("tradetime:", line.leftText)
-            local timeMatch = string.match(line.leftText, matchString)
-            if timeMatch then
-                return timeMatch
-            end
-        end
-    end
-
-    return nil -- No time found
-end
-
 --- Function snatched from https://github.com/zeptognome/BetterBags_Bindings
 ---@param tooltipData TooltipData
 ---@return Enum.TooltipDataItemBinding|nil

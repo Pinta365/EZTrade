@@ -50,7 +50,6 @@ local function addIfTradeableAndRelevant(itemLink)
             item:ContinueOnItemLoad(function()
                 local name = item:GetItemName()
                 local tooltipData = C_TooltipInfo.GetItemByGUID(itemGuid)
-                --local tradeTimerLeft = EZT.getTradeTimeRemainingFromTooltipData(tooltipData) or ""
 
                 if tradeableBinds(tooltipData) then
                     EZT.AddLoot(itemLink, itemID, name, icon, itemGuid, itemLoc)
@@ -86,9 +85,6 @@ function f:ADDON_LOADED(addon)
         EZT.InitOptions()
         EZT.debugPrint(addonName .. " v" .. EZT.addon.version .. " is loaded.")
 
-        if EZTradeDB.debug then
-            EZT.setUpDebugFrame()
-        end
     end
 end
 

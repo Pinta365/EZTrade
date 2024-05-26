@@ -14,6 +14,5 @@ src\Config.lua
 src\Utilities.lua
 src\SlashCommand.lua
 src\OptionsPanel.lua
-src\DebugPanel.lua
 src\TradePanel.lua
 EZTrade.lua

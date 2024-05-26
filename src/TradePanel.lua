@@ -2,7 +2,7 @@
 
 local addonName, EZT = ...
 
-local attachToFrame = PaperDollItemsFrame --TradeFrame PaperDollItemsFrame MerchantFrame
+local attachToFrame = TradeFrame --TradeFrame PaperDollItemsFrame MerchantFrame
 
 ---@class EZTradeFrame: Frame
 local EZTradeFrame = CreateFrame("Frame", "EZTradeFrame", attachToFrame, "DefaultPanelFlatTemplate")
@@ -159,7 +159,6 @@ EZT.RedrawLootList = function()
 
     for i = 1, #myLoot do
         local lootItem = myLoot[i]
-
         -- Update longestLootString for width calculation
         longestLootString = max(longestLootString, #lootItem.name)
 
