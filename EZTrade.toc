@@ -1,9 +1,9 @@
-## Interface: 100207
+## Interface: 110000
 ## Name: EZTrade
 ## Title: |cff45D388EZTrade|r
 ## Notes: EZ trade items you recently looted
 ## Author: Pinta365@Github
-## Version: 0.2.0
+## Version: 0.3.0
 ## SavedVariables: EZTradeDB
 ## X-Curse-Project-ID: 1016387
 ## X-Wago-ID: BKpqarGE
