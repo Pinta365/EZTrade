@@ -33,6 +33,10 @@ SlashCmdList["EZTrade_CMD"] = function(args)
         end
 
     else
-        InterfaceOptionsFrame_OpenToCategory("EZTrade")
+        if InterfaceOptionsFrame_OpenToCategory then
+			InterfaceOptionsFrame_OpenToCategory("EZTrade")
+		else
+			Settings.OpenToCategory(EZT.settingsCategory.ID)
+		end
     end
 end

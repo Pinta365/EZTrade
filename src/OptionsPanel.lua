@@ -96,6 +96,14 @@ EZT.InitOptions = function()
      optionsPanel.versionInfo = optionsPanel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
      optionsPanel.versionInfo:SetPoint("BOTTOMRIGHT", optionsPanel, -10, 10)
      optionsPanel.versionInfo:SetText(addonName .. " v" .. EZT.addon.version)
-    --Add panel to interface
-    InterfaceOptions_AddCategory(optionsPanel)
+    
+     --Add panel to interface
+    if InterfaceOptions_AddCategory then
+        InterfaceOptions_AddCategory(optionsPanel)
+    else
+        local category, layout = Settings.RegisterCanvasLayoutCategory(optionsPanel, optionsPanel.name);
+        Settings.RegisterAddOnCategory(category);
+        EZT.settingsCategory = category
+    end
+
 end

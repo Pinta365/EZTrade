@@ -8,6 +8,9 @@ EZT.addon = {
     version = C_AddOns.GetAddOnMetadata("EZTrade", "Version")
 }
 
+--Placeholder for settings category
+EZT.settingsCategory = nil
+
 --Default configuration
 EZT.addonDefaults = {
     debug = false,
