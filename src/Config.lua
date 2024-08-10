@@ -2,6 +2,9 @@
 
 local _, EZT = ...
 
+--Register the Wago Analytics lib.
+EZT.WagoAnalytics = LibStub("WagoAnalytics"):Register("BKpqarGE")
+
 --Addon information parsed from TOC
 EZT.addon = {
     title = C_AddOns.GetAddOnMetadata("EZTrade", "Title"),

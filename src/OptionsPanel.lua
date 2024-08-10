@@ -106,4 +106,6 @@ EZT.InitOptions = function()
         EZT.settingsCategory = category
     end
 
+    -- Collect analytics.
+    EZT.WagoAnalytics:IncrementCounter("OpenOptions")
 end

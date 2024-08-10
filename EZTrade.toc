@@ -3,13 +3,16 @@
 ## Title: |cff45D388EZTrade|r
 ## Notes: EZ trade items you recently looted
 ## Author: Pinta365@Github
-## Version: 0.3.1
+## Version: 0.3.2
 ## SavedVariables: EZTradeDB
+## IconTexture: Interface\AddOns\EZTrade\Textures\pinta
+## OptionalDependencies: WagoAnalytics
+
 ## X-Curse-Project-ID: 1016387
 ## X-Wago-ID: BKpqarGE
 ## X-WoWI-ID: 26739
-## IconTexture: Interface\AddOns\EZTrade\Textures\pinta
 
+libs\WagoAnalytics\Shim.lua
 src\Config.lua
 src\Utilities.lua
 src\OptionsPanel.lua
