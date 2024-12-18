@@ -57,7 +57,7 @@ local function findAndUseItem(searchID)
             local currentID = containerInfo and containerInfo.itemID or nil
             if currentID == searchID then
                 C_Container.UseContainerItem(bag, slot)
-                break
+                return
             end
         end
     end
