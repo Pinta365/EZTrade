@@ -1,9 +1,9 @@
-## Interface: 110000, 110002
+## Interface: 110007
 ## Name: EZTrade
 ## Title: |cff45D388EZTrade|r
 ## Notes: EZ trade items you recently looted
 ## Author: Pinta365@Github
-## Version: 0.3.2
+## Version: 0.3.3
 ## SavedVariables: EZTradeDB
 ## IconTexture: Interface\AddOns\EZTrade\Textures\pinta
 ## OptionalDependencies: WagoAnalytics
